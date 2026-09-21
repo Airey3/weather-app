@@ -21,3 +21,4 @@ def show_temp_view(request):
     }
 
     return render(request, 'show_temp.html', context)
+
