@@ -6,3 +6,5 @@ urlpatterns = [
     path("", show_temp_view, name='home'),
 ]
 
+
+
