@@ -1,11 +1,13 @@
 from django.shortcuts import render
+from .models import City
 import requests
 
 
 
 def show_temp_view(request):
+    city = City.objects.first()
 
-    lat, lon = 37.7981, 48.5146
+    lat, lon = city.lat, city.lon
     url = f"https://api.open-meteo.com/v1/forcast?latitude={lat}&longitude={lon}&current_weather=true"
 
     try:
@@ -16,9 +18,15 @@ def show_temp_view(request):
 
 
     context = {
-        'city': 'Hamedan',
+        'city': city.title,
         'temp': temp,
     }
 
     return render(request, 'show_temp.html', context)
+
+def city_list_view(request):
+    cities = City.objects.all()
+    context = {"cities": cities}
+    return render(request, "city_list.html", context)
+
 
