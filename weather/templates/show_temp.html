@@ -10,6 +10,16 @@
 </head>
 
 <body>
+    {% if user.is_authenticated %}   
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %} 
+            <button>logging out of account</button>
+        </form>
+    {% else %}
+        <form method="get" action="{% url 'login' %}">
+            <button>logging in</button>
+        </form>    
+    {% endif %}
 
     <h1>weather brodcas website</h1>
     {% if temp %}
