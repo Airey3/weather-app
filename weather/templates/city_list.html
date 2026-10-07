@@ -7,10 +7,22 @@
 </head>
 
 <body>
-    {% for item in cities %}
-    <p><a href="{% url 'home' %}?id={{ item.id }}">{{item.title}}</a></p>
+    <h1>City List</h1>
 
-    {% endfor %}    
+    {% for item in cities %}
+    <div style="margin:10px;">
+        <a href="{% url 'home' %}?id={{ item.id }}">{{item.title}}</a>
+        
+        {% if user.is_authenticated %}
+            <form method="post" action="{% url 'delete_city' %}" style="display:inline">
+                {% csrf_token %}
+                <button type="submit" name="id" value="{{ item.id }}">delete</button>
+            </form>
+        {% endif %}
+
+    </div>
+    {% endfor %}  
+
 </body>
 
 </html>

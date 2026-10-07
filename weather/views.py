@@ -1,7 +1,22 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import City
+from .forms import CityForm
 import requests
 
+
+def add_city_view(request):
+     
+    if request.method == "POST":
+        form = CityForm(request.POST)
+        if form.is_valid():
+             form.save()
+             return redirect("city_list")
+    else:
+        form = CityForm()
+
+    context = {'form': form}
+    
+    return render(request, "add_city.html", context)
 
 
 def show_temp_view(request):
@@ -35,5 +50,16 @@ def city_list_view(request):
     cities = City.objects.all()
     context = {"cities": cities}
     return render(request, "city_list.html", context)
+
+
+def delete_city_view(request):
+    if request.method == "POST":
+        city_id = request.POST.get('id')
+        city = City.objects.filter(id=city_id) 
+
+        if city:
+            city.delete()
+
+    return redirect('city_list')
 
 

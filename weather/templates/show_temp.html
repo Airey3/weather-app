@@ -11,13 +11,14 @@
 
 <body>
     {% if user.is_authenticated %}   
+        <a href="{% url 'add_city' %}">Add City</a>
         <form method="post" action="{% url 'logout' %}">
             {% csrf_token %} 
-            <button>logging out of account</button>
+            <input type="submit" value="logging out" >
         </form>
     {% else %}
         <form method="get" action="{% url 'login' %}">
-            <button>logging in</button>
+            <input type="submit" value="login">
         </form>    
     {% endif %}
 
