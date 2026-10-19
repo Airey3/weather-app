@@ -63,3 +63,4 @@ def delete_city_view(request):
     return redirect('city_list')
 
 
+  
