@@ -4,30 +4,17 @@ from .forms import CityForm
 import requests
 
 
-def add_city_view(request):
-     
-    if request.method == "POST":
-        form = CityForm(request.POST)
-        if form.is_valid():
-             form.save()
-             return redirect("city_list")
-    else:
-        form = CityForm()
-
-    context = {'form': form}
-    
-    return render(request, "add_city.html", context)
-
-
 def show_temp_view(request):
 
     city_id = request.GET.get('id')
 
     if city_id:
-        city = City.objects.get(id=city_id)
+        city = City.objects.filter(id=city_id).first()
     else:
-            city = City.objects.first()
+        city = City.objects.first()
 
+    if not city:
+        return render(request, 'show_temp')
 
     lat, lon = city.lat, city.lon
     url = f"https://api.open-meteo.com/v1/forcast?latitude={lat}&longitude={lon}&current_weather=true"
@@ -46,6 +33,23 @@ def show_temp_view(request):
     return render(request, 'show_temp.html', context)
 
 
+def add_city_view(request):
+    if not request.user.is_authenticated:
+        return redirect("login")
+     
+    if request.method == "POST":
+        form = CityForm(request.POST)
+        if form.is_valid():
+             form.save()
+             return redirect("city_list")
+    else:
+        form = CityForm()
+
+    context = {'form': form}
+    
+    return render(request, "add_city.html", context)
+
+
 def city_list_view(request):
     cities = City.objects.all()
     context = {"cities": cities}
@@ -53,6 +57,10 @@ def city_list_view(request):
 
 
 def delete_city_view(request):
+    if not request.user.is_authenticated:
+        return redirect("login")
+            
+
     if request.method == "POST":
         city_id = request.POST.get('id')
         city = City.objects.filter(id=city_id) 

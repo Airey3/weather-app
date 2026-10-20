@@ -10,6 +10,7 @@
 </head>
 
 <body>
+
     {% if user.is_authenticated %}   
         <a href="{% url 'add_city' %}">Add City</a>
         <form method="post" action="{% url 'logout' %}">
@@ -23,6 +24,7 @@
     {% endif %}
 
     <h1>weather brodcas website</h1>
+    
     {% if temp %}
     <h2>{{city}} {{temp}}  degree today</h2>
     {% else %}
