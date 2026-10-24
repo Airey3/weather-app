@@ -1,22 +1,91 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>login page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login</title>
+    <style>
+
+        * { box-sizing: border-box; }
+        body {
+            font-family: system-ui, sans-serif;
+            background: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .login-card {
+            background: #fff;
+            padding: 2rem;
+            width: 100%;
+            max-width: 360px;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+        }
+        h1 { margin: 0 0 1.5rem; font-size: 1.5rem; text-align: center; }
+        label { display: block; margin-bottom: 0.25rem; font-size: 0.9rem; font-weight: 600; }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 0.6rem 0.75rem;
+            margin-bottom: 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        input:focus { outline: 2px solid #2563eb; border-color: transparent; }
+        button {
+            width: 100%;
+            padding: 0.7rem;
+            background: #2563eb;
+            color: #fff;
+            border: 0;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        button:hover { background: #1d4ed8; }
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 0.6rem 0.75rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+    </style>
 
 </head>
 
 <body>
-    <h1>site login page</h1>
-    
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Login</button>    
-    
-    </form>
-    
-</body>
+    <div class="login-card">
+        <h1>Log in</h1>
 
+        {% if form.errors %}
+            <div class="error">Incorrect username or password. Please try again.</div>
+        {% endif %}
+
+        {% if next and user.is_authenticated %}
+            <div class="error">Your account doesn't have access to this page.</div>
+        {% endif %}
+
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+
+            <label for="{{ form.username.id_for_label }}">Username</label>
+            <input type="text" name="username" id="{{ form.username.id_for_label }}"
+                   autocomplete="username" autofocus required>
+
+            <label for="{{ form.password.id_for_label }}">Password</label>
+            <input type="password" name="password" id="{{ form.password.id_for_label }}"
+                   autocomplete="current-password" required>
+
+            <input type="hidden" name="next" value="{{ next }}">
+
+            <button type="submit">Log in</button>
+        </form>
+    </div>
+</body>
 </html>

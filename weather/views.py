@@ -60,15 +60,20 @@ def delete_city_view(request):
     if not request.user.is_authenticated:
         return redirect("login")
             
+    try:    
+        if request.method == "POST":
+            city_id = request.POST.get('id')
+            city = City.objects.filter(id=city_id) 
 
-    if request.method == "POST":
-        city_id = request.POST.get('id')
-        city = City.objects.filter(id=city_id) 
+            if city:
+                city.delete()
 
-        if city:
-            city.delete()
+        return redirect('city_list')
+    
+    except Exception as p:
+        print(f"{p} is causing problem in delete city section")
 
-    return redirect('city_list')
+
 
 
   

@@ -7,14 +7,33 @@
 </head>
 
 <body>
+
     <h1>City List</h1>
+    {% if user.is_authenticated %}
+    <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %} 
+            <input type="submit" value="log out">
+        </form>
+
+        <form  method="POST" action="{% url 'add_city' %}">
+            {% csrf_token %}
+            <button type="submit">Add City</button>
+        </form>
+
+    {% else %}
+        <form method="get" action="{% url 'login' %}">
+                <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                <input type="submit" value="login">
+            </form>    
+    {% endif %}
+
 
     {% for item in cities %}
     <div style="margin:10px;">
         <a href="{% url 'home' %}?id={{ item.id }}">{{item.title}}</a>
         
         {% if user.is_authenticated %}
-            <form method="post" action="{% url 'delete_city' %}" style="display:inline">
+            <form method="POST" action="{% url 'delete_city' %}" style="display:inline">
                 {% csrf_token %}
                 <button type="submit" name="id" value="{{ item.id }}">delete</button>
             </form>

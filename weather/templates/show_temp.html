@@ -15,7 +15,7 @@
         <a href="{% url 'add_city' %}">Add City</a>
         <form method="post" action="{% url 'logout' %}">
             {% csrf_token %} 
-            <input type="submit" value="logging out" >
+            <input type="submit" value="log out">
         </form>
     {% else %}
         <form method="get" action="{% url 'login' %}">
