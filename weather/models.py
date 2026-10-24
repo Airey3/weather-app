@@ -15,7 +15,8 @@ class Products(models.Model):
     name = models.CharField(max_length=50)
     price = models.FloatField()
 
-    def __srt__(self):
-        return self.title 
+    def __str__(self):
+        return f'{self.name} ==> {self.price}'
+
 
     

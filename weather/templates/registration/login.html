@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>login page </title>
+    <title>login page</title>
 
 </head>
 
 <body>
     <h1>site login page</h1>
     
-    <form method="post">
+    <form method="POST">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Login</button>    
